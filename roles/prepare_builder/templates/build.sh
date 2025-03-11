@@ -18,7 +18,7 @@ BUILD_LOCATION="builds/$JOB_NAME"
 
 # build args with defaults
 DISTRO=${DISTRO:=autosd9-sig} # autosd cs9
-ARCH=${ARCH:=x86_64}  # aarch64 x86_64
+ARCH=${ARCH:=aarch64}  # aarch64 x86_64
 TARGET=${TARGET:=qemu}   # rpi4 qemu
 MODE=${MODE:=image}  # package image
 EXPORT_FORMAT=${EXPORT_FORMAT:=qcow2}  # image qcow2 container

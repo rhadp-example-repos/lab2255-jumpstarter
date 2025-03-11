@@ -1,12 +1,12 @@
 # Do not modify this file.
 # Implement pre-/post-install, install/uninstall tasks in their own files.
 
-#- name: running pre-install tasks
-#  include_tasks:
-#    file: ./pre_install.yml
-#    apply:
-#      become: "{{ become_override | bool }}"
-#  when: ACTION == "INSTALL"
+- name: running pre-install tasks
+  include_tasks:
+    file: ./pre_install.yml
+    apply:
+      become: "{{ become_override | bool }}"
+  when: ACTION == "INSTALL"
 
 - name: running install tasks
   include_tasks:
