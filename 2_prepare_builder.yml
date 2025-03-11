@@ -1,0 +1,13 @@
+- name: Update/patch the automotive-image-builder hosts
+  hosts: automotive-image-builder
+  vars:
+    # set the following to control the install/uninstall process
+    silent: false
+    become_override: false
+    ACTION: "INSTALL" # INSTALL, UNINSTALL, UPDATE
+  
+  tasks:
+    - name: Update/patch/uninstall the automotive-image-builder hosts
+      include_role:
+        name: roles/prepare_builder
+

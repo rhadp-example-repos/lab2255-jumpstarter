@@ -1,3 +1,10 @@
+automotive-image-builder:
+  hosts:
+    bastion.k8qtz...com:
+      # ansible configuration
+      ansible_user: dev-admin
+      ansible_password: "xyz123"
+
 all:
   vars:
     # set the following RHDP instance specific variables

@@ -1,0 +1,15 @@
+---
+# defaults
+# clean-up before each run if set to 'true'
+remove_work_dir: true
+remove_builder_dir: true
+
+# where to store stuff needed for the builds
+work_dir: "/home/workspace"
+build_dir: "builder"
+
+# automotive-image-builder repo
+aib_repo: "https://github.com/rhadp-example-repos/automotive-image-builder"
+aib_branch: "main"
+aib_dest: "automotive-image-builder"
+

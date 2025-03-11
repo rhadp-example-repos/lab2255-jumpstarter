@@ -1,0 +1,35 @@
+# Implement your pre-install deployment tasks here
+# -------------------------------------------------
+
+- name: Update and upgrade packages
+  become: true
+  dnf:
+    name: "*"
+    state: latest
+    update_cache: yes
+
+- name: "Install (optional) packages"
+  become: true
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - podman
+      - git
+
+- name: Installing KVM and Qemu packages
+  become: true
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - "@virtualization-hypervisor"
+      - "@virtualization-client"
+      - "@virtualization-platform"
+      - "@virtualization-tools"
+      - qemu-kvm
+      - libvirt
+      - virt-install
+      - virt-viewer
