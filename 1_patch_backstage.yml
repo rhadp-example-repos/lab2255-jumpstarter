@@ -1,0 +1,13 @@
+- name: Update/patch the Developer Hub installation
+  hosts: localhost
+  vars:
+    # set the following to control the install/uninstall process
+    silent: false
+    become_override: false
+    ACTION: "INSTALL" # INSTALL, UNINSTALL, UPDATE
+  
+  tasks:
+    - name: Update/patch/uninstall the Developer Hub patch
+      include_role:
+        name: roles/patch_backstage
+

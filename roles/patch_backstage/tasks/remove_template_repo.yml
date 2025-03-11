@@ -1,0 +1,54 @@
+# Implement your tasks here
+# -------------------------------------------------
+
+- name: get gitlab host
+  ansible.builtin.set_fact:
+    gitlab_host: "gitlab-{{ gitlab_namespace }}.{{r_ingress_config.resources[0].spec.domain }}"
+
+- name: retrieve gitlab private token
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: root-user-personal-token
+    namespace: "{{ gitlab_namespace }}"
+  register: r_root_token
+  retries: 120
+  delay: 10
+  until:
+  - r_root_token is defined
+  - r_root_token.resources is defined
+  - r_root_token.resources | length > 0
+  - r_root_token.resources[0] is defined
+  - r_root_token.resources[0].data is defined
+  - r_root_token.resources[0].data.token is defined
+  - r_root_token.resources[0].data.token | length > 0
+
+- name: register gitlab token
+  ansible.builtin.set_fact:
+    gitlab_token: "{{ r_root_token.resources[0].data.token | b64decode }}"
+
+- name: lookup project
+  uri:
+    url: https://{{ gitlab_host }}/api/v4/projects?search={{ templates_repo_name }}
+    method: GET
+    validate_certs: false
+  register: r_project
+  until: r_project.status == 200 or r_project.status == 403
+  retries: 5
+  delay: 10
+
+- name: register project id
+  set_fact:
+    project_id: "{{ r_project.json[0].id }}"
+  when: r_project.status == 200 and r_project.json[0].id is defined
+
+- name: delete project
+  uri:
+    url: https://{{ gitlab_host }}/api/v4/projects/{{ project_id }}
+    method: DELETE
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_token }}"
+    validate_certs: false
+    status_code: 202
+  register: r_project_delete
+  when: project_id is defined

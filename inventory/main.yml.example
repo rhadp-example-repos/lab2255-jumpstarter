@@ -1,0 +1,9 @@
+all:
+  vars:
+    # set the following RHDP instance specific variables
+    cluster_generic_password: "xyz123" # get this from the RHPD Demo Access Details overview
+
+    # infrastructure variables
+    cluster_guid: "k8qtz"   # get this from the RHPD Demo URL
+    region: "us-east-2"
+

@@ -1,0 +1,14 @@
+---
+# defaults
+templates_repo_group: "rhdh"
+templates_repo_name: "lab2255-templates"
+templates_repo_url: "https://github.com/rhadp-example-repos/lab2255-templates"
+templates_repo_branch: "main"
+
+# Developer Hub customization
+rhdh_title: "Red Hat Automotive Development Platform"
+
+# defaults from Trusted Application Pipeline roles, without changes
+gitlab_root_user: root
+gitlab_root_password: openshift
+gitlab_namespace: gitlab

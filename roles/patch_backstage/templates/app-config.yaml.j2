@@ -1,0 +1,192 @@
+app:
+  title: {{ rhdh_title }}
+  baseUrl: https://backstage-developer-hub-backstage.{{ cluster_apps_domain }}
+argocd:
+  appLocatorMethods:
+  - instances:
+    - name: main
+      password: {{ cluster_generic_password }}
+      url: https://argocd-server-janus-argocd.{{ cluster_apps_domain }}
+      username: admin
+    type: config
+auth:
+  environment: production
+  providers:
+    oauth2Proxy: {}
+backend:
+  auth:
+    externalAccess:
+    - options:
+        subject: orchestrator
+        token: ${ORCHESTRATOR_TOKEN}
+      type: static
+    keys:
+    - secret: ${BACKEND_SECRET}
+  baseUrl: https://backstage-developer-hub-backstage.{{ cluster_apps_domain }}
+  cors:
+    credentials: true
+    methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    origin: https://backstage-backstage.{{ cluster_apps_domain }}
+  csp:
+    connect-src:
+    - '''self'''
+    - 'http:'
+    - 'https:'
+    - 'data:'
+    img-src:
+    - '''self'''
+    - 'data:'
+    script-src:
+    - '''self'''
+    - '''unsafe-inline'''
+    - '''unsafe-eval'''
+    script-src-elem:
+    - '''self'''
+    - '''unsafe-inline'''
+    - '''unsafe-eval'''
+  database:
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      password: ${POSTGRES_ADMIN_PASSWORD}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+  listen:
+    host: 0.0.0.0
+    port: 7007
+  reading:
+    allow:
+    - host: '*.{{ cluster_apps_domain }}'
+catalog:
+  locations:
+  #- rules:
+  #  - allow:
+  #    - Template
+  #  target: https://gitlab-gitlab.{{ cluster_apps_domain }}/rhdh/software-templates/blob/main/showcase-templates.yaml
+  #  type: url
+  #- rules:
+  #  - allow:
+  #    - Group
+  #    - User
+  #  target: https://gitlab-gitlab.{{ cluster_apps_domain }}/rhdh/software-templates/blob/main/org.yaml
+  #  type: url
+  - rules:
+    - allow:
+        - Template
+    target: https://gitlab-gitlab.{{ cluster_apps_domain }}/{{ templates_repo_group }}/{{ templates_repo_name }}/blob/{{ templates_repo_branch }}/templates.yaml
+    type: url
+  - rules:
+    - allow:
+        - Group
+        - User
+    target: https://gitlab-gitlab.{{ cluster_apps_domain }}/{{ templates_repo_group }}/{{ templates_repo_name }}/blob/{{ templates_repo_branch }}/org.yaml
+    type: url
+  providers:
+    gitlab:
+      selfHosted:
+        host: gitlab-gitlab.{{ cluster_apps_domain }}
+        schedule:
+          frequency:
+            seconds: 10
+          timeout:
+            seconds: 60
+    ocm:
+      default:
+        kubernetesPluginRef: dev-cluster-infra
+        name: multiclusterhub
+        owner: group:rhdh
+        schedule:
+          frequency:
+            seconds: 10
+          timeout:
+            seconds: 60
+  rules:
+  - allow:
+    - Domain
+    - Component
+    - System
+    - API
+    - Resource
+    - Location
+    - Template
+enabled:
+  argocd: true
+  github: false
+  githubOrg: false
+  gitlab: true
+  jenkins: false
+  keycloak: true
+  kubernetes: true
+  ocm: true
+  permission: false
+  sonarqube: false
+  techdocs: true
+integrations:
+  gitlab:
+  - apiBaseUrl: https://gitlab-gitlab.{{ cluster_apps_domain }}/api/v4
+    baseUrl: https://gitlab-gitlab.{{ cluster_apps_domain }}
+    host: gitlab-gitlab.{{ cluster_apps_domain }}
+    token: {{ gitlab_token }}
+kubernetes:
+  clusterLocatorMethods:
+  - clusters:
+    - authProvider: serviceAccount
+      name: dev-cluster-infra
+      serviceAccountToken: {{ service_account_token }}
+      skipTLSVerify: true
+      url: https://api.{{ cluster_base_domain }}:6443
+    type: config
+  customResources:
+  - apiVersion: v1beta1
+    group: tekton.dev
+    plural: pipelineruns
+  - apiVersion: v1beta1
+    group: tekton.dev
+    plural: taskruns
+  - apiVersion: v1
+    group: route.openshift.io
+    plural: routes
+  serviceLocatorMethod:
+    type: multiTenant
+permission:
+  enabled: false
+proxy:
+  endpoints:
+    /developer-hub:
+      changeOrigin: true
+      pathRewrite:
+        ^/api/proxy/developer-hub/learning-paths: /{{ templates_repo_group }}/{{ templates_repo_name }}/-/raw/{{ templates_repo_branch }}/config/learning-paths.json
+        ^/api/proxy/developer-hub/tech-radar: /{{ templates_repo_group }}/{{ templates_repo_name }}/-/raw/{{ templates_repo_branch }}/config/tech-radar.json
+        ^/api/proxy/developer-hub: /{{ templates_repo_group }}/{{ templates_repo_name }}/-/raw/{{ templates_repo_branch }}/config/quick-start.json
+      secure: false
+      target: https://gitlab-gitlab.{{ cluster_apps_domain }}/
+    
+    /quay/api:
+      changeOrigin: true
+      headers:
+        Authorization: Bearer {{ quay_api_token }}
+        X-Requested-With: XMLHttpRequest
+      secure: false
+      target: https://quay-{{ cluster_guid }}.{{ cluster_apps_domain }}
+quay:
+  uiUrl: https://quay-{{ cluster_guid }}.{{ cluster_apps_domain }}
+scaffolder: null
+signInPage: oauth2Proxy
+techdocs:
+  builder: external
+  generator:
+    runIn: local
+  publisher:
+    awsS3:
+      bucketName: backstage-bucket
+      credentials:
+        accessKeyId: minio
+        secretAccessKey: {{ cluster_generic_password }}
+      endpoint: https://minio-ic-shared-minio.{{ cluster_apps_domain }}
+      region: {{ region }}
+      s3ForcePathStyle: true
+    type: awsS3

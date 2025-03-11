@@ -1,0 +1,31 @@
+# Implement your uninstall deployment tasks here
+# -------------------------------------------------
+- name: running uninstall tasks
+  debug:
+    msg: "Running uninstallation tasks for {{ role_name }}"
+
+- name: determine cluster apps domain
+  k8s_info:
+    api_version: config.openshift.io/v1
+    kind: Ingress
+    name: cluster
+  register: r_ingress_config
+  failed_when: r_ingress_config.resources | length < 1
+
+- name: register cluster apps domain
+  set_fact:
+    cluster_apps_domain: "{{ r_ingress_config.resources[0].spec.domain }}"
+    
+- name: remove automotive templates from gitlab
+  include_tasks:
+    file: ./remove_template_repo.yml
+    apply:
+      become: "{{ become_override | bool }}"
+
+# Leave these as the last tasks in the playbook
+- name: uninstall tasks complete
+  debug:
+    msg: "Uninstall tasks completed successfully."
+  when:
+    - not silent|bool
+

@@ -1,0 +1,35 @@
+# Implement your install deployment tasks here
+# -------------------------------------------------
+- name: running install tasks
+  debug:
+    msg: "Running installation tasks for {{ role_name }}"
+
+- name: import automotive templates into gitlab
+  include_tasks:
+    file: ./import_template_repo.yml
+    apply:
+      become: "{{ become_override | bool }}"
+
+- name: disable gitops sync
+  shell: |
+    oc patch apps backstage-gitops -n openshift-gitops --type=json -p '[{"op": "remove", "path": "/spec/syncPolicy/automated"}]'
+    oc patch apps backstage -n openshift-gitops --type=json -p '[{"op": "remove", "path": "/spec/syncPolicy/automated"}]'
+  ignore_errors: true
+
+- name: create backstage config file
+  template:
+    src: "roles/patch_backstage/templates/app-config.yaml.j2"
+    dest: "roles/patch_backstage/templates/app-config.yaml"
+
+- name: patch backstage configmap
+  shell: |
+    oc delete configmap backstage-developer-hub-app-config -n backstage
+    oc create configmap backstage-developer-hub-app-config --from-file=roles/patch_backstage/templates/app-config.yaml -n backstage
+    oc label --overwrite configmap backstage-developer-hub-app-config rht-gitops.com/openshift-gitops=backstage
+
+# Leave these as the last tasks in the playbook
+- name: install tasks complete
+  debug:
+    msg: "Install tasks completed successfully."
+  when:
+    - not silent|bool
