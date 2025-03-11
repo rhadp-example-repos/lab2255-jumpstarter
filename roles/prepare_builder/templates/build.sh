@@ -31,7 +31,7 @@ PULL_ARG="--pull=newer"
 BUILDER_IMAGE="quay.io/centos-sig-automotive/automotive-osbuild:latest"
 
 # computed args
-CANONICAL_BUILD_NAME="$JOB_NAME-$DISTRO-$TARGET-$MANIFEST.$ARCH"
+CANONICAL_BUILD_NAME="$JOB_NAME"_"$DISTRO"_"$TARGET"_"$MANIFEST.$ARCH"
 
 OSBUILD_CMD="automotive-image-builder/automotive-image-builder build \
     --distro "$DISTRO" --arch "$ARCH" --target "$TARGET" --mode "$MODE" --export "$EXPORT_FORMAT" \
@@ -51,5 +51,5 @@ podman run --rm --privileged $PULL_ARG --security-opt label=type:unconfined_t \
   && mv "$BUILD_NAME.$EXPORT_FORMAT" "builds/$CANONICAL_BUILD_NAME.$EXPORT_FORMAT"
 
 # cleanup
-mv "$BUILD_LOCATION/output.json" "builds/$JOB_NAME-output.json"
+mv "$BUILD_LOCATION/output.json" "builds/$JOB_NAME.output.json"
 rm -rf "$BUILD_LOCATION"
