@@ -1,0 +1,17 @@
+- name: Update/patch the CI
+  hosts: localhost
+  vars:
+    vault_namespace: "vault"
+
+  tasks:
+    - name: Create vault secrets for aib-builder
+      ignore_errors: true
+      kubernetes.core.k8s_exec:
+        namespace: "{{ vault_namespace }}"
+        pod: vault-0
+        command: "{{ item }}"
+      loop:
+        - "vault kv put kv/secrets/janusidp/aib/user value={{ aib_builder_user }}"
+        - "vault kv put kv/secrets/janusidp/aib/password value={{ aib_builder_password }}"
+        - "vault kv put kv/secrets/janusidp/aib/host value={{ aib_builder_host }}"
+
