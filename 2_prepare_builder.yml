@@ -1,5 +1,5 @@
 - name: Update/patch the automotive-image-builder hosts
-  hosts: automotive-image-builder
+  hosts: aib-hosts
   vars:
     # set the following to control the install/uninstall process
     silent: false
@@ -9,5 +9,4 @@
   tasks:
     - name: Update/patch/uninstall the automotive-image-builder hosts
       include_role:
-        name: roles/prepare_builder
-
+        name: roles/prepare_aib

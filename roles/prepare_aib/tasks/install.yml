@@ -17,7 +17,7 @@
     path: "{{ work_dir }}/{{ build_dir }}/{{ item }}"
     state: directory
   with_items:
-    - "manifests"
+    #- "manifests"
     - "builds"
     - ".mpp-cache"
   when: remove_builder_dir
@@ -31,22 +31,22 @@
     single_branch: yes
   when: remove_builder_dir
 
-- name: Copy builder.sh
-  become: true
-  ansible.builtin.copy:
-    src: "../templates/build.sh"
-    dest: "{{ work_dir }}/{{ build_dir }}/build.sh"
-    mode: "0755"
-  when: remove_builder_dir
+#- name: Copy builder.sh
+#  become: true
+#  ansible.builtin.copy:
+#    src: "../templates/build.sh"
+#    dest: "{{ work_dir }}/{{ build_dir }}/build.sh"
+#    mode: "0755"
+#  when: remove_builder_dir
 
-- name: Copy the build manifest examples
-  become: true
-  ansible.builtin.template:
-    src: "../templates/{{ item }}"
-    dest: "{{ work_dir }}/{{ build_dir }}/manifests/{{ item }}"
-    mode: "0644"
-  loop:
-    - "basic.mpp.yml"
+#- name: Copy the build manifest examples
+#  become: true
+#  ansible.builtin.template:
+#    src: "../templates/{{ item }}"
+#    dest: "{{ work_dir }}/{{ build_dir }}/manifests/{{ item }}"
+#    mode: "0644"
+#  loop:
+#    - "basic.mpp.yml"
 
 # Leave these as the last tasks in the playbook
 - name: install tasks complete
