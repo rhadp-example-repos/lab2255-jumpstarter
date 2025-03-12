@@ -1,6 +1,11 @@
 - name: Update/patch the CI
   hosts: localhost
   vars:
+    # set the following to control the install/uninstall process
+    silent: false
+    become_override: false
+    ACTION: "INSTALL" # INSTALL, UNINSTALL, UPDATE
+    
     vault_namespace: "vault"
 
   tasks:

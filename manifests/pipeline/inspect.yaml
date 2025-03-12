@@ -1,0 +1,27 @@
+kind: ClusterTask
+apiVersion: tekton.dev/v1beta1
+metadata:
+  name: inspect
+spec:
+  description: |
+    Inspect the workspace
+  params:
+    - name: EXTRA_CMD
+      type: string
+      default: 'ls -la'
+  steps:
+    - name: debug
+      image: registry.redhat.io/ubi9/python-312
+      
+      script: |
+        #!/usr/bin/env bash
+
+        pwd
+
+        ls -la
+
+        $(params.EXTRA_CMD)
+      
+      workingDir: $(workspaces.source.path)
+  workspaces:
+    - name: source

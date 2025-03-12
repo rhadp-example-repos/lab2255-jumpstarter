@@ -63,17 +63,6 @@ backend:
     - host: '*.{{ cluster_apps_domain }}'
 catalog:
   locations:
-  #- rules:
-  #  - allow:
-  #    - Template
-  #  target: https://gitlab-gitlab.{{ cluster_apps_domain }}/rhdh/software-templates/blob/main/showcase-templates.yaml
-  #  type: url
-  #- rules:
-  #  - allow:
-  #    - Group
-  #    - User
-  #  target: https://gitlab-gitlab.{{ cluster_apps_domain }}/rhdh/software-templates/blob/main/org.yaml
-  #  type: url
   - rules:
     - allow:
         - Template
