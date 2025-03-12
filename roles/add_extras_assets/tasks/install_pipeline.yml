@@ -1,0 +1,9 @@
+# Implement your install deployment tasks here
+# -------------------------------------------------
+
+- name: install cluster tasks
+  k8s:
+    state: present
+    definition: "{{ lookup('template', item ) | from_yaml }}"
+  loop:
+    - inspect.yaml.j2

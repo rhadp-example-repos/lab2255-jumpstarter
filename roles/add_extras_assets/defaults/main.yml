@@ -1,0 +1,3 @@
+---
+# defaults
+operator_namespace: "openshift-operators"

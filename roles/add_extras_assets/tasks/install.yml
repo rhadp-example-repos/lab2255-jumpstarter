@@ -1,0 +1,19 @@
+# Implement your install deployment tasks here
+# -------------------------------------------------
+- name: running install tasks
+  debug:
+    msg: "Running installation tasks for {{ role_name }}"
+
+- name: install pipeline assets
+  include_tasks:
+    file: ./install_pipeline.yml
+    apply:
+      become: "{{ become_override | bool }}"
+
+# Leave these as the last tasks in the playbook
+- name: install tasks complete
+  debug:
+    msg: "Install tasks completed successfully."
+  when:
+    - not silent|bool
+

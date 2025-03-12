@@ -20,3 +20,6 @@
         - "vault kv put kv/secrets/janusidp/aib/password value={{ aib_builder_password }}"
         - "vault kv put kv/secrets/janusidp/aib/host value={{ aib_builder_host }}"
 
+    - name: Update/patch/uninstall extra assets
+      include_role:
+        name: roles/add_extra_assets
