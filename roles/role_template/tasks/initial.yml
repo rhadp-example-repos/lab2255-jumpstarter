@@ -1,7 +1,7 @@
 # Implement your initial tasks here
 # -------------------------------------------------
 
-- name: determine cluster base domain
+- name: determine cluster apps domain
   k8s_info:
     api_version: config.openshift.io/v1
     kind: Ingress
@@ -9,7 +9,6 @@
   register: r_ingress_config
   failed_when: r_ingress_config.resources | length < 1
 
-- name: register cluster base domain
+- name: register cluster apps domain
   set_fact:
-    cluster_domain: "{{ r_ingress_config.resources[0].spec.domain }}"
     cluster_apps_domain: "{{ r_ingress_config.resources[0].spec.domain }}"
