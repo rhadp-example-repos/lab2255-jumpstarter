@@ -3,5 +3,5 @@
 
 - name: remove local backstage config file
   file:
-    path: "roles/patch_backstage/templates/app-config.yaml"
+    path: "roles/patch_developer_hub/templates/app-config.yaml"
     state: absent

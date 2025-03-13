@@ -14,6 +14,12 @@ all:
     cluster_guid: "k8qtz"   # get this from the RHPD Demo URL
     region: "us-east-2"  # get this from the RHPD Demo configuration screen
 
+    # template specific variables
+    templates_repo_group: "rhdh"
+    templates_repo_name: "lab2255-templates"
+    templates_repo_url: "https://github.com/rhadp-example-repos/lab2255-templates"
+    templates_repo_branch: "main"
+
     # aib-builder specific variables
     aib_builder_user: "lab-user"
     aib_builder_password: "xyz123"
