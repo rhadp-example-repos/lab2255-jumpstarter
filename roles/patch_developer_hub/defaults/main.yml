@@ -1,6 +1,7 @@
 ---
 # defaults
 
-
 # Developer Hub customization
 rhdh_title: "Red Hat Automotive Development Platform"
+
+backstage_namespace: backstage

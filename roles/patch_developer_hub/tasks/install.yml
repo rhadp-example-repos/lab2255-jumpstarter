@@ -1,0 +1,13 @@
+# Implement your install deployment tasks here
+# -------------------------------------------------
+
+- name: create backstage config file
+  template:
+    src: "roles/patch_backstage/templates/app-config.yaml.j2"
+    dest: "roles/patch_backstage/templates/app-config.yaml"
+
+- name: replace backstage configmap
+  shell: |
+    oc delete configmap backstage-developer-hub-app-config -n backstage
+    oc create configmap backstage-developer-hub-app-config --from-file=roles/patch_backstage/templates/app-config.yaml -n backstage
+    oc label --overwrite configmap backstage-developer-hub-app-config rht-gitops.com/openshift-gitops=backstage

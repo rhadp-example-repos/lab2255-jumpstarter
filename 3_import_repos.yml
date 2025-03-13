@@ -1,4 +1,4 @@
-- name: Update/patch the Developer Hub installation
+- name: Update/patch the code templates
   hosts: localhost
   vars:
     # set the following to control the install/uninstall process
@@ -7,7 +7,7 @@
     ACTION: "INSTALL" # INSTALL, UNINSTALL, UPDATE
   
   tasks:
-    - name: Update/patch/uninstall the Developer Hub patch
+    - name: Update/patch/uninstall the code templates
       include_role:
-        name: roles/patch_backstage
+        name: roles/import_repos
 

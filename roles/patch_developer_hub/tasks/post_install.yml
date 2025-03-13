@@ -1,0 +1,7 @@
+# Implement your post-install deployment tasks here
+# -------------------------------------------------
+
+- name: remove local backstage config file
+  file:
+    path: "roles/patch_backstage/templates/app-config.yaml"
+    state: absent

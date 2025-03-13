@@ -1,0 +1,8 @@
+# Implement your pre-install deployment tasks here
+# -------------------------------------------------
+
+- name: disable gitops sync
+  shell: |
+    oc patch apps backstage-gitops -n openshift-gitops --type=json -p '[{"op": "remove", "path": "/spec/syncPolicy/automated"}]'
+    oc patch apps backstage -n openshift-gitops --type=json -p '[{"op": "remove", "path": "/spec/syncPolicy/automated"}]'
+  ignore_errors: true
