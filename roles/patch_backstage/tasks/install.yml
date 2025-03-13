@@ -4,12 +4,6 @@
   debug:
     msg: "Running installation tasks for {{ role_name }}"
 
-- name: import automotive templates into gitlab
-  include_tasks:
-    file: ./import_template_repo.yml
-    apply:
-      become: "{{ become_override | bool }}"
-
 - name: disable gitops sync
   shell: |
     oc patch apps backstage-gitops -n openshift-gitops --type=json -p '[{"op": "remove", "path": "/spec/syncPolicy/automated"}]'
