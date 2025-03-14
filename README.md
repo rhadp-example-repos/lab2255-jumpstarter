@@ -5,7 +5,14 @@ Jumpstarter Lab setup (RH Summit 2025)
 
 ### Prerequisites
 
-* Minio Access Key
+Retrieve the following information from the RHDP emails/console:
+
+* OpenShift cluster credentials
+* RHEL Host credentials
+* Create a Minio Access Key
+* local installation of `oc` CLI
+
+Make sure to authenticate to the cluster using the `oc` CLI first. Also, make sure to add the RHEL instance's host to the list of known hosts.
 
 ### Setup
 
