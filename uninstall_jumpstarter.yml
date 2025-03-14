@@ -1,0 +1,13 @@
+- name: Deploy the Jumpstarter operator
+  hosts: localhost
+  vars:
+    # set the following to control the install/uninstall process
+    silent: false
+    become_override: false
+    ACTION: "UNINSTALL" # INSTALL, UNINSTALL, UPDATE
+  
+  tasks:
+    - name: Update/patch/uninstall the Jumpstarter operator
+      include_role:
+        name: roles/install_jumpstarter_operator
+

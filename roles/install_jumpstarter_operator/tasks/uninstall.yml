@@ -1,3 +1,8 @@
 # Implement your uninstall deployment tasks here
 # -------------------------------------------------
 
+- name: uninstall the Jumpstarter operator
+  shell: oc delete apps jumpstarter -n openshift-gitop
+
+- name: delete the Jumpstarter namespace
+  shell: oc delete namespace "{{ jumpstarter_namespace }}"

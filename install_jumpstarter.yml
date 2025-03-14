@@ -9,5 +9,5 @@
   tasks:
     - name: Update/patch/uninstall the Jumpstarter operator
       include_role:
-        name: roles/install_jumpstarter
+        name: roles/install_jumpstarter_operator
 

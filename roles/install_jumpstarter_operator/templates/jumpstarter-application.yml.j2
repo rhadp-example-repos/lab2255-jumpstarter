@@ -13,7 +13,7 @@ spec:
     helm:
       parameters:
         - name: global.baseDomain
-          value: devel.jumpstarter.dev
+          value: "{{ cluster_apps_domain }}"
         - name: global.metrics.enabled
           value: "true"
         - name: jumpstarter-controller.controllerSecret
