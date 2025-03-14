@@ -20,6 +20,10 @@ all:
     templates_repo_url: "https://github.com/rhadp-example-repos/lab2255-templates"
     templates_repo_branch: "main"
 
+    # namespace specific variables
+    gitlab_namespace: gitlab
+    backstage_namespace: backstage
+    
     # aib-builder specific variables
     aib_builder_user: "lab-user"
     aib_builder_password: "xyz123"
