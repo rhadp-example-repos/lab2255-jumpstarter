@@ -1,0 +1,24 @@
+# Implement your install deployment tasks here
+# -------------------------------------------------
+
+- name: Create vault secrets for aib-builder host access
+  ignore_errors: true
+  kubernetes.core.k8s_exec:
+    namespace: "{{ vault_namespace }}"
+    pod: vault-0
+    command: "{{ item }}"
+  loop:
+    - "vault kv put kv/secrets/janusidp/aib/user value={{ aib_builder_user }}"
+    - "vault kv put kv/secrets/janusidp/aib/password value={{ aib_builder_password }}"
+    - "vault kv put kv/secrets/janusidp/aib/host value={{ aib_builder_host }}"
+
+- name: Create vault secrets for S3/minio access
+  ignore_errors: true
+  kubernetes.core.k8s_exec:
+    namespace: "{{ vault_namespace }}"
+    pod: vault-0
+    command: "{{ item }}"
+  loop:
+    - "vault kv put kv/secrets/janusidp/s3minio/accessKey value={{ s3_accessKey }}"
+    - "vault kv put kv/secrets/janusidp/s3minio/secretKey value={{ s3_secretKey }}"
+    - "vault kv put kv/secrets/janusidp/s3minio/endpoint value=minio-ic-shared-minio.{{ cluster_apps_domain }}"

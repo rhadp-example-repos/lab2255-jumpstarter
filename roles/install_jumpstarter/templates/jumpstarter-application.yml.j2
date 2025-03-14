@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jumpstarter
+  namespace: openshift-gitops
+spec:
+  destination:
+    name: in-cluster
+    namespace: "{{ jumpstarter_namespace }}"
+  project: default
+  source:
+    chart: jumpstarter
+    helm:
+      parameters:
+        - name: global.baseDomain
+          value: devel.jumpstarter.dev
+        - name: global.metrics.enabled
+          value: "true"
+        - name: jumpstarter-controller.controllerSecret
+          value: "{{ jumpstarter_token }}"
+        - name: jumpstarter-controller.routerSecret
+          value: "{{ jumpstarter_token }}"
+        - name: jumpstarter-controller.grpc.mode
+          value: "route"
+    repoURL: "{{ jumpstarter_helm_repo }}"
+    targetRevision: "{{ jumpstarter_helm_repo_version }}"
+  syncPolicy:
+    automated: {}
+    retry:
+      backoff:
+        duration: 10s5s
+        factor: 2
+        maxDuration: 10m0s
+      limit: 2
+    syncOptions:
+      - RespectIgnoreDifferences=true

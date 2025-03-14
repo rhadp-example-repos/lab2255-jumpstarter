@@ -1,6 +1,12 @@
 # lab2255-jumpstarter
 Jumpstarter Lab setup (RH Summit 2025)
 
+### Overview
+
+### Prerequisites
+
+* Minio Access Key
+
 ### Setup
 
 First steps:

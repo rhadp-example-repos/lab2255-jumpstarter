@@ -23,4 +23,8 @@ all:
     # aib-builder specific variables
     aib_builder_user: "lab-user"
     aib_builder_password: "xyz123"
-    aib_builder_host: "xyz.sandbox620.opentlc.com"
+    aib_builder_host: "xyz...opentlc.com"
+
+    # S3/Minio.io specific variables
+    s3_accessKey: "xyz123"
+    s3_secretKey: "xyz123"
