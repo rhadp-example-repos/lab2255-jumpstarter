@@ -14,3 +14,7 @@
     - name: Update/patch/uninstall extra assets
       include_role:
         name: roles/add_extra_assets
+
+    - name: Update/patch/uninstall the Jumpstarter operator
+      include_role:
+        name: roles/install_jumpstarter_operator
