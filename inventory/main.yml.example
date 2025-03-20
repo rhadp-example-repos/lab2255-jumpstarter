@@ -29,6 +29,7 @@ all:
     aib_builder_password: "xyz123"
     aib_builder_host: "xyz...opentlc.com"
 
-    # S3/Minio.io specific variables
-    s3_accessKey: "xyz123"
-    s3_secretKey: "xyz123"
+    # AWS specific variables
+    aws_access_key_id: "xyz123"
+    aws_secret_access_key: "xyz123"
+    aws_default_region: "us-east-2"
