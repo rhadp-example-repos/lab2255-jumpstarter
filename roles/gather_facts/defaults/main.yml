@@ -1,0 +1,6 @@
+---
+# defaults
+gitlab_namespace: "gitlab"
+backstage_namespace: "backstage"
+vault_namespace: "vault"
+quay_namespace: "quay-enterprise"

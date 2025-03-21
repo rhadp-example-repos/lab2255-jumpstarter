@@ -5,8 +5,16 @@
     silent: false
     become_override: false
     ACTION: "INSTALL" # INSTALL, UNINSTALL, UPDATE
-  
+
   tasks:
-    - name: Update/patch/uninstall the automotive-image-builder host
+    - name: gather facts
+      include_role:
+        name: roles/gather_facts
+
+    - name: update/patch/uninstall the automotive-image-builder host
       include_role:
         name: roles/prepare_aib
+
+    - name: update/patch/uninstall the external credentials
+      include_role:
+        name: roles/add_credentials

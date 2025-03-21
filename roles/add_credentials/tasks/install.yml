@@ -1,0 +1,30 @@
+# Implement your install deployment tasks here
+# -------------------------------------------------
+
+- name: create AWS config location
+  ansible.builtin.file:
+    path: "~/.aws"
+    state: directory
+
+- name: copy AWS config
+  ansible.builtin.template:
+    src: "../templates/aws_config.j2"
+    dest: "~/.aws/config"
+    mode: "0644"
+
+- name: copy AWS credentials
+  ansible.builtin.template:
+    src: "../templates/aws_credentials.j2"
+    dest: "~/.aws/credentials"
+    mode: "0644"
+
+- name: create Podman config location
+  ansible.builtin.file:
+    path: "~/.docker"
+    state: directory
+
+- name: copy podman config
+  ansible.builtin.template:
+    src: "../templates/docker_config.json.j2"
+    dest: "~/.docker/config.json"
+    mode: "0644"

@@ -157,7 +157,7 @@ proxy:
     /quay/api:
       changeOrigin: true
       headers:
-        Authorization: Bearer {{ quay_api_token }}
+        Authorization: Bearer {{ quay_admin_token }}
         X-Requested-With: XMLHttpRequest
       secure: false
       target: https://quay-{{ cluster_guid }}.{{ cluster_apps_domain }}

@@ -68,7 +68,7 @@
 
 - name: register quay admin token
   ansible.builtin.set_fact:
-    quay_api_token: "{{ r_quay_token.resources[0].data.token | b64decode }}"
+    quay_admin_token: "{{ r_quay_token.resources[0].data.token | b64decode }}"
 
 - name: get default token
   ansible.builtin.shell: >-
