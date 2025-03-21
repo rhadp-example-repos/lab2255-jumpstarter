@@ -1,13 +1,13 @@
 # Implement your install deployment tasks here
 # -------------------------------------------------
 
-- name: Remove the builder directory
+- name: remove the builder directory
   become: true
   ansible.builtin.file:
     path: "{{ work_dir }}/{{ build_dir }}"
     state: absent
 
-- name: Create builder sub-directories
+- name: create builder sub-directories
   become: true
   ansible.builtin.file:
     path: "{{ work_dir }}/{{ build_dir }}/{{ item }}"
@@ -16,10 +16,15 @@
     - "builds"
     - ".mpp-cache"
 
-- name: Clone the repo
+- name: clone the repo
   become: true
   ansible.builtin.git:
     repo: "{{ aib_repo }}"
     version: "{{ aib_branch }}"
     dest: "{{ work_dir }}/{{ build_dir }}/{{ aib_dest }}"
     single_branch: yes
+
+- name: additional Python packages
+  become: true
+  shell: |
+    pip install boto3

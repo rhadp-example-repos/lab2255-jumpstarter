@@ -1,14 +1,14 @@
 # Implement your pre-install deployment tasks here
 # -------------------------------------------------
 
-- name: Update and upgrade packages
-  become: true
-  dnf:
-    name: "*"
-    state: latest
-    update_cache: yes
+#- name: Update and upgrade packages
+#  become: true
+#  dnf:
+#    name: "*"
+#    state: latest
+#    update_cache: yes
 
-- name: "Install (optional) packages"
+- name: install packages
   become: true
   dnf:
     name: "{{ packages }}"
@@ -17,14 +17,7 @@
     packages:
       - podman
       - git
-
-- name: Installing KVM and Qemu packages
-  become: true
-  dnf:
-    name: "{{ packages }}"
-    state: present
-  vars:
-    packages:
+      - python3-pip
       - "@virtualization-hypervisor"
       - "@virtualization-client"
       - "@virtualization-platform"
