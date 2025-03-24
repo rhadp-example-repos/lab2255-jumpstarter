@@ -18,7 +18,7 @@
     dest: "~/.aws/credentials"
     mode: "0644"
 
-- name: create Podman config location
+- name: create podman config location
   ansible.builtin.file:
     path: "~/.docker"
     state: directory
