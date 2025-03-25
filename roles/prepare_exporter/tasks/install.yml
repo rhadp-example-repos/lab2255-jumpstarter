@@ -1,0 +1,14 @@
+# Implement your install deployment tasks here
+# -------------------------------------------------
+
+- name: build Badgerd SDWireC
+  ansible.builtin.import_tasks: build_sdwire.yml
+  when: install_sdwire
+
+- name: build YKUSH 
+  ansible.builtin.import_tasks: build_ykush.yml
+  when: install_ykush
+
+- name: build Jumpstarter
+  ansible.builtin.import_tasks: build_jumpstarter.yml
+  when: install_jumpstarter

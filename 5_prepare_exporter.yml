@@ -1,0 +1,17 @@
+- name: Prepare a exporter host
+  hosts: exporter
+  vars:
+    # set the following to control the install/uninstall process
+    silent: false
+    become_override: false
+    ACTION: "INSTALL" # INSTALL, UNINSTALL, UPDATE
+  
+  tasks:
+    #- name: gather facts
+    #  include_role:
+    #    name: roles/gather_facts
+        
+    - name: Update/patch/uninstall the exporter configuration
+      include_role:
+        name: roles/prepare_exporter
+

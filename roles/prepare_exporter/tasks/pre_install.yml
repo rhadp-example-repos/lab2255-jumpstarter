@@ -1,0 +1,53 @@
+# Implement your pre-install deployment tasks here
+# -------------------------------------------------
+
+- name: install additional packages
+  become: true
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - traceroute
+      - podman
+      - git
+
+- name: install development packages
+  become: true
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - build-essential
+      - libftdi1-dev
+      - libpopt-dev
+      - cmake
+      - pkg-config
+      - libusb-1.0-0
+      - libusb-1.0-0-dev
+
+- name: install python3-pip
+  become: true
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - python3-pip
+
+- name: remove the working directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ work_dir }}"
+    state: absent
+
+- name: re-create the working dir
+  become: true
+  ansible.builtin.file:
+    path: "{{ work_dir }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0755
+  

@@ -5,13 +5,27 @@ aib-hosts:
       ansible_user: lab-user
       ansible_password: "xyz123"
 
+exporter:
+  hosts:
+    outpost.local:
+      ssh_public_key_file: ~/.ssh/id_rsa.pub # use this key to access the image
+
+      # DuT infrastructure
+      dut_usb_port: 1
+      dut_serial_device: bdgrd_sdwirec_437
+      dut_sdcard_mount: "/dev/sda"
+
+      # ansible configuration
+      ansible_user: root
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa # private key used to access the remote server
+
 all:
   vars:
     # set the following RHDP instance specific variables
     cluster_generic_password: "xyz123" 
 
     # other infrastructure variables
-    cluster_guid: "k8qtz"   # get this from the RHPD Demo URL
+    cluster_guid: "xyz123"   # get this from the RHPD Demo URL
     region: "us-east-2"  # get this from the RHPD Demo configuration screen
 
     # template specific variables

@@ -1,0 +1,22 @@
+- name: remove the install dir
+  ansible.builtin.file:
+    path: "{{ work_dir }}/jumpstarter"
+    state: absent
+
+- name: clone repo
+  ansible.builtin.git:
+    repo: "{{ jumpstarter_repo }}"
+    version: "{{ jumpstarter_branch }}"
+    dest: "{{ work_dir }}/jumpstarter"
+    single_branch: yes
+
+- name: copy build script
+  ansible.builtin.copy:
+    src: "../files/build.sh"
+    dest: "{{ work_dir }}/jumpstarter/build.sh"
+    mode: "0755"
+
+- name: build 'jumpstarter'
+  shell: ./build.sh
+  args:
+    chdir: "{{ work_dir }}/jumpstarter"
