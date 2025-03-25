@@ -15,16 +15,3 @@
     definition: "{{ lookup('template', item ) | from_yaml }}"
   loop:
     - jumpstarter-application.yml.j2
-
-- name: create secret
-  kubernetes.core.k8s:
-    state: present
-    kind: Secret
-    name: jumpstarter-secret
-    namespace: "{{ jumpstarter_namespace }}"
-    definition:
-      metadata:
-        name: jumpstarter-secret
-      type: Opaque
-      data:
-        token: "{{ jumpstarter_token }}"

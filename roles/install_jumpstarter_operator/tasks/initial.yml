@@ -1,10 +1,2 @@
 # Implement your initial tasks here
 # -------------------------------------------------
-
-- name: create jumpstarter token
-  ansible.builtin.set_fact:
-    jumpstarter_token: "{{ lookup('password', '/dev/null chars=ascii_letters,digits '~ 'length=' ~ 20) }}"
-
-- name: jumpstarter token
-  debug:
-    msg: "default token: {{ jumpstarter_token }}"
