@@ -27,15 +27,6 @@
       - libusb-1.0-0
       - libusb-1.0-0-dev
 
-- name: install python3-pip
-  become: true
-  apt:
-    name: "{{ packages }}"
-    state: present
-  vars:
-    packages:
-      - python3-pip
-
 - name: remove the working directory
   become: true
   ansible.builtin.file:
@@ -50,4 +41,17 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: 0755
+
+- name: install the oc client
+  become: true
+  shell: |
+    curl {{ oc_client_url }} -o oc.tar.gz
+    tar xvf oc.tar.gz
+    sudo mv oc /usr/local/bin/
+    sudo mv kubectl /usr/local/bin/
+    rm oc.tar.gz
+  args:
+    chdir: "{{ work_dir }}"
+
+
   

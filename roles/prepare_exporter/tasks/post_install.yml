@@ -1,3 +1,14 @@
 # Implement your post-install deployment tasks here
 # -------------------------------------------------
 
+# create the example exporter if it does not exist first !
+
+- name: read example exporter
+  include_vars:
+    file: "../tmp/default-exporter.yaml"
+
+- name: copy exporter templates
+  ansible.builtin.template:
+    src: "../templates/mock-exporter.yaml.j2"
+    dest: "{{ work_dir }}/mock-exporter.yaml"
+    mode: "0644"

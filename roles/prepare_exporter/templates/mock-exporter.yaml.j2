@@ -1,0 +1,16 @@
+apiVersion: jumpstarter.dev/v1alpha1
+kind: ExporterConfig
+metadata:
+  namespace: default
+  name: outpost-mock-exporter
+endpoint: grpc.{{ cluster_apps_domain }}:443
+tls:
+  ca: ""
+  insecure: true
+token: {{ token }}
+grpcOptions: {}
+export:
+  storage:
+    type: jumpstarter_driver_opendal.driver.MockStorageMux
+  power:
+    type: jumpstarter_driver_power.driver.MockPower

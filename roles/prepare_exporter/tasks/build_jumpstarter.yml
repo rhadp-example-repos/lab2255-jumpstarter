@@ -11,8 +11,8 @@
     single_branch: yes
 
 - name: copy build script
-  ansible.builtin.copy:
-    src: "../files/build.sh"
+  ansible.builtin.template:
+    src: "../templates/build.sh.j2"
     dest: "{{ work_dir }}/jumpstarter/build.sh"
     mode: "0755"
 
