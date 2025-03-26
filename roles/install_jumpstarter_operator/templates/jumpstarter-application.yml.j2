@@ -16,10 +16,6 @@ spec:
           value: "{{ cluster_apps_domain }}"
         - name: global.metrics.enabled
           value: "true"
-        - name: jumpstarter-controller.controllerSecret
-          value: "{{ jumpstarter_token }}"
-        - name: jumpstarter-controller.routerSecret
-          value: "{{ jumpstarter_token }}"
         - name: jumpstarter-controller.grpc.mode
           value: "route"
     repoURL: "{{ jumpstarter_helm_repo }}"

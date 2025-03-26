@@ -1,29 +1,2 @@
 # Implement your initial tasks here
 # -------------------------------------------------
-
-- name: gather facts
-  delegate_to: localhost
-  block:
-    - name: determine cluster base domain
-      k8s_info:
-        api_version: config.openshift.io/v1
-        kind: DNS
-        name: cluster
-      register: r_dns_config
-      failed_when: r_dns_config.resources | length < 1
-
-    - name: register cluster base domain
-      set_fact:
-        cluster_base_domain: "{{ r_dns_config.resources[0].spec.baseDomain }}"
-
-    - name: determine cluster apps domain
-      k8s_info:
-        api_version: config.openshift.io/v1
-        kind: Ingress
-        name: cluster
-      register: r_ingress_config
-      failed_when: r_ingress_config.resources | length < 1
-
-    - name: register cluster apps domain
-      set_fact:
-        cluster_apps_domain: "{{ r_ingress_config.resources[0].spec.domain }}"

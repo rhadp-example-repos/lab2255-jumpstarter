@@ -7,11 +7,14 @@
     ACTION: "INSTALL" # INSTALL, UNINSTALL, UPDATE
   
   tasks:
-    #- name: gather facts
-    #  include_role:
-    #    name: roles/gather_facts
+    - name: gather facts
+      include_role:
+        name: roles/gather_facts
         
     - name: Update/patch/uninstall the exporter configuration
       include_role:
         name: roles/prepare_exporter
 
+    - name: update/patch/uninstall the external credentials
+      include_role:
+        name: roles/add_credentials
