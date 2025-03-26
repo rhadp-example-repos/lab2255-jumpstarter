@@ -11,14 +11,3 @@
       include_role:
         name: roles/gather_facts
 
-    - name: Update/patch/uninstall vault keys
-      include_role:
-        name: roles/add_credentials
-
-    #- name: Update/patch/uninstall extra assets
-    #  include_role:
-    #    name: roles/add_extra_assets
-
-    #- name: Update/patch/uninstall the Jumpstarter operator
-    #  include_role:
-    #    name: roles/install_jumpstarter_operator

@@ -3,30 +3,34 @@
 
 # create the example exporter if it does not exist first !
 
-- name: create the mock exporter
+- name: create the default exporters
   become: true
   shell: |
     podman run --rm -ti --net=host --privileged \
       -v /run/udev:/run/udev -v /dev:/dev -v /root/.kube/config:/root/.kube/config -v "$PWD":"$PWD" \
       quay.io/rhadp-example-repos/jumpstarter:latest \
-      /bin/bash -c "cd $PWD/; jmp admin create exporter outpost-mock -l shadowcar/board mock --save --out ./outpost-mock-exporter.yaml"
+      /bin/bash -c "cd $PWD/; jmp admin create exporter outpost-{{ item }} -l lab2255/board {{ item }} --save --out ./outpost-{{ item }}-exporter.yaml"
   args:
     chdir: "{{ work_dir }}"
+  with_items:
+    - "default"
+    - "rpi4"
+    - "ti"
 
-- name: create the mock client
+- name: create the default test client
   become: true
   shell: |
     podman run --rm -ti --net=host --privileged \
       -v /run/udev:/run/udev -v /dev:/dev -v /root/.kube/config:/root/.kube/config \
       -v "$PWD":"$PWD" -v /root/.config/jumpstarter:/root/.config/jumpstarter \
       quay.io/rhadp-example-repos/jumpstarter:latest \
-      /bin/bash -c "cd $PWD/; jmp admin create client outpost-mock --save --unsafe"
+      /bin/bash -c "cd $PWD/; jmp admin create client outpost-default --save --unsafe"
   args:
     chdir: "{{ work_dir }}"
 
 - name: read the exporter config
   slurp:
-    src: "{{ work_dir }}/outpost-mock-exporter.yaml"
+    src: "{{ work_dir }}/outpost-default-exporter.yaml"
   register: exporter_file
 
 - name: parse the exporter config
@@ -43,16 +47,20 @@
   loop:
     - "vault kv put kv/secrets/janusidp/jumpstarter/token value={{ exporter_config.token }}"
 
-- name: patch the mock exporter config
+- name: patch the exporter configs
   become: true
   ansible.builtin.template:
-    src: "../templates/mock-exporter.yaml.j2"
-    dest: "{{ work_dir }}/outpost-mock-exporter.yaml"
+    src: "../templates/{{ item }}-exporter.yaml.j2"
+    dest: "{{ work_dir }}/outpost-{{ item }}-exporter.yaml"
     mode: "0755"
+  with_items:
+    - "default"
+    - "rpi4"
+    - "ti"
 
 - name: patch the mock cient config
   become: true
   ansible.builtin.template:
-    src: "../templates/mock-client.yaml.j2"
-    dest: "/root/.config/jumpstarter/clients/outpost-mock.yaml"
+    src: "../templates/default-client.yaml.j2"
+    dest: "/root/.config/jumpstarter/clients/outpost-default.yaml"
     mode: "0755"
