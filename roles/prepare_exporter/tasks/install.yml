@@ -9,10 +9,6 @@
   ansible.builtin.import_tasks: build_ykush.yml
   when: install_ykush
 
-#- name: install python
-#  ansible.builtin.import_tasks: install_python.yml
-#  when: install_jumpstarter
-
 - name: install oc
   ansible.builtin.import_tasks: install_oc.yml
   when: install_jumpstarter

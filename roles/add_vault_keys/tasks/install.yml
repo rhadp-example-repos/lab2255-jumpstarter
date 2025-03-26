@@ -1,7 +1,7 @@
 # Implement your install deployment tasks here
 # -------------------------------------------------
 
-- name: Create vault secrets for aib-builder host access
+- name: create vault secrets for aib-builder host access
   ignore_errors: true
   kubernetes.core.k8s_exec:
     namespace: "{{ vault_namespace }}"
@@ -12,7 +12,7 @@
     - "vault kv put kv/secrets/janusidp/aib/password value={{ aib_builder_password }}"
     - "vault kv put kv/secrets/janusidp/aib/host value={{ aib_builder_host }}"
 
-- name: Create vault secrets for AWS/S3
+- name: create vault secrets for AWS/S3
   ignore_errors: true
   kubernetes.core.k8s_exec:
     namespace: "{{ vault_namespace }}"

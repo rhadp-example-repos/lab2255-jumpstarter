@@ -44,7 +44,6 @@
   with_items:
     - "{{ work_dir }}"
     - "/etc/jumpstarter"
-    - "$HOME/.config/jumpstarter"
     - "/root/.config/jumpstarter"
     
 - name: re-create the working dirs
@@ -58,8 +57,8 @@
   with_items:
     - "{{ work_dir }}"
     - "/etc/jumpstarter"
-    - "$HOME/.config/jumpstarter"
-    - "/root/.config/jumpstarter"
+    - "/root/.config/jumpstarter/clients"
+
 
 
 

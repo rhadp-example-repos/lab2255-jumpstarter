@@ -7,14 +7,52 @@
   become: true
   shell: |
     podman run --rm -ti --net=host --privileged \
-      -v /run/udev:/run/udev -v /dev:/dev -v /etc/jumpstarter:/etc/jumpstarter -v /root/.kube/config:/root/.kube/config \
+      -v /run/udev:/run/udev -v /dev:/dev -v /root/.kube/config:/root/.kube/config -v "$PWD":"$PWD" \
       quay.io/rhadp-example-repos/jumpstarter:latest \
-      jmp admin create exporter outpost-mock -l shadowcar/board mock --save
+      /bin/bash -c "cd $PWD/; jmp admin create exporter outpost-mock -l shadowcar/board mock --save --out ./outpost-mock-exporter.yaml"
+  args:
+    chdir: "{{ work_dir }}"
 
 - name: create the mock client
   become: true
   shell: |
     podman run --rm -ti --net=host --privileged \
-      -v /run/udev:/run/udev -v /dev:/dev -v /etc/jumpstarter:/etc/jumpstarter -v /root/.kube/config:/root/.kube/config \
+      -v /run/udev:/run/udev -v /dev:/dev -v /root/.kube/config:/root/.kube/config \
+      -v "$PWD":"$PWD" -v /root/.config/jumpstarter:/root/.config/jumpstarter \
       quay.io/rhadp-example-repos/jumpstarter:latest \
-      jmp admin create client outpost-mock --save --unsafe
+      /bin/bash -c "cd $PWD/; jmp admin create client outpost-mock --save --unsafe"
+  args:
+    chdir: "{{ work_dir }}"
+
+- name: read the exporter config
+  slurp:
+    src: "{{ work_dir }}/outpost-mock-exporter.yaml"
+  register: exporter_file
+
+- name: parse the exporter config
+  set_fact:
+    exporter_config: "{{ exporter_file.content | b64decode | from_yaml }}"
+
+- name: create vault secrets for jumpstarter
+  ignore_errors: true
+  delegate_to: localhost
+  kubernetes.core.k8s_exec:
+    namespace: "{{ vault_namespace }}"
+    pod: vault-0
+    command: "{{ item }}"
+  loop:
+    - "vault kv put kv/secrets/janusidp/jumpstarter/token value={{ exporter_config.token }}"
+
+- name: patch the mock exporter config
+  become: true
+  ansible.builtin.template:
+    src: "../templates/mock-exporter.yaml.j2"
+    dest: "{{ work_dir }}/outpost-mock-exporter.yaml"
+    mode: "0755"
+
+- name: patch the mock cient config
+  become: true
+  ansible.builtin.template:
+    src: "../templates/mock-client.yaml.j2"
+    dest: "/root/.config/jumpstarter/clients/outpost-mock.yaml"
+    mode: "0755"
