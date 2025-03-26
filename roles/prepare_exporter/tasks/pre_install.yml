@@ -45,7 +45,7 @@
     - "{{ work_dir }}"
     - "/etc/jumpstarter"
     - "/root/.config/jumpstarter"
-    
+
 - name: re-create the working dirs
   become: true
   ansible.builtin.file:
@@ -58,11 +58,3 @@
     - "{{ work_dir }}"
     - "/etc/jumpstarter"
     - "/root/.config/jumpstarter/clients"
-
-
-
-
-
-
-
-  

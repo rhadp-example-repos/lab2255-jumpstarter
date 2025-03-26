@@ -1,2 +1,5 @@
 ---
 # defaults
+
+# oc client
+oc_client_url: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.18.6/openshift-client-linux-arm64.tar.gz"

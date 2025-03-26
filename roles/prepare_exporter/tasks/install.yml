@@ -9,10 +9,6 @@
   ansible.builtin.import_tasks: build_ykush.yml
   when: install_ykush
 
-- name: install oc
-  ansible.builtin.import_tasks: install_oc.yml
-  when: install_jumpstarter
-
 - name: pull the jumpstarter container
   become: true
   shell: podman pull {{ container_image }}

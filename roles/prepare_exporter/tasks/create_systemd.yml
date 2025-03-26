@@ -1,0 +1,32 @@
+- name: create shell scripts
+  become: true
+  ansible.builtin.template:
+    src: "../templates/default-exporter.sh.j2"
+    dest: "/usr/local/bin/outpost-{{ item }}-exporter"
+    mode: "0755"
+  with_items:
+    - "default"
+    - "rpi4"
+    - "ti"
+
+- name: create systemd scripts
+  become: true
+  ansible.builtin.template:
+    src: "../templates/default-exporter.service.j2"
+    dest: "/etc/systemd/system/outpost-{{ item }}-exporter.service"
+    mode: "0755"
+  with_items:
+    - "default"
+    - "rpi4"
+    - "ti"
+
+- name: enable the systemd services
+  become: true
+  shell: |
+    systemctl daemon-reload
+    systemctl enable outpost-{{ item }}-exporter.service
+    systemctl start outpost-{{ item }}-exporter.service
+  with_items:
+    - "default"
+    - "rpi4"
+    - "ti"

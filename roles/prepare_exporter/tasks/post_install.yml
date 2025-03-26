@@ -17,17 +17,6 @@
     - "rpi4"
     - "ti"
 
-- name: create the default test client
-  become: true
-  shell: |
-    podman run --rm -ti --net=host --privileged \
-      -v /run/udev:/run/udev -v /dev:/dev -v /root/.kube/config:/root/.kube/config \
-      -v "$PWD":"$PWD" -v /root/.config/jumpstarter:/root/.config/jumpstarter \
-      quay.io/rhadp-example-repos/jumpstarter:latest \
-      /bin/bash -c "cd $PWD/; jmp admin create client outpost-default --save --unsafe"
-  args:
-    chdir: "{{ work_dir }}"
-
 - name: read the exporter config
   slurp:
     src: "{{ work_dir }}/outpost-default-exporter.yaml"
@@ -58,9 +47,5 @@
     - "rpi4"
     - "ti"
 
-- name: patch the mock cient config
-  become: true
-  ansible.builtin.template:
-    src: "../templates/default-client.yaml.j2"
-    dest: "/root/.config/jumpstarter/clients/outpost-default.yaml"
-    mode: "0755"
+- name: create systemd services
+  ansible.builtin.import_tasks: create_systemd.yml
