@@ -34,11 +34,11 @@
   shell: |
     curl {{ oc_client_url }} -o oc.tar.gz
     tar xvf oc.tar.gz
-    sudo mv oc /usr/local/bin/
-    sudo mv kubectl /usr/local/bin/
+    mv oc /usr/local/bin/
+    mv kubectl /usr/local/bin/
     rm oc.tar.gz
   args:
-    chdir: "{{ work_dir }}"
+    chdir: "/tmp"
 
 - name: authenticate to the cluster (normal user)
   shell: oc login https://api.{{ cluster_base_domain }}:6443 --username=admin --password={{ cluster_generic_password }} --insecure-skip-tls-verify=true
