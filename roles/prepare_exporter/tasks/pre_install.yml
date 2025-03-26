@@ -1,6 +1,13 @@
 # Implement your pre-install deployment tasks here
 # -------------------------------------------------
 
+- name: update and upgrade packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+
 - name: install additional packages
   become: true
   apt:
@@ -26,32 +33,37 @@
       - pkg-config
       - libusb-1.0-0
       - libusb-1.0-0-dev
+      - python3-pip
+      - sense-hat
 
-- name: remove the working directory
+- name: remove the working dirs
   become: true
   ansible.builtin.file:
-    path: "{{ work_dir }}"
+    path: "{{ item }}"
     state: absent
-
-- name: re-create the working dir
+  with_items:
+    - "{{ work_dir }}"
+    - "/etc/jumpstarter"
+    - "$HOME/.config/jumpstarter"
+    - "/root/.config/jumpstarter"
+    
+- name: re-create the working dirs
   become: true
   ansible.builtin.file:
-    path: "{{ work_dir }}"
+    path: "{{ item }}"
     state: directory
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: 0755
+  with_items:
+    - "{{ work_dir }}"
+    - "/etc/jumpstarter"
+    - "$HOME/.config/jumpstarter"
+    - "/root/.config/jumpstarter"
 
-- name: install the oc client
-  become: true
-  shell: |
-    curl {{ oc_client_url }} -o oc.tar.gz
-    tar xvf oc.tar.gz
-    sudo mv oc /usr/local/bin/
-    sudo mv kubectl /usr/local/bin/
-    rm oc.tar.gz
-  args:
-    chdir: "{{ work_dir }}"
+
+
+
 
 
   

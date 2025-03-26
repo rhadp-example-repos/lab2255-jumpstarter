@@ -9,10 +9,14 @@
   ansible.builtin.import_tasks: build_ykush.yml
   when: install_ykush
 
-- name: install python
-  ansible.builtin.import_tasks: install_python.yml
+#- name: install python
+#  ansible.builtin.import_tasks: install_python.yml
+#  when: install_jumpstarter
+
+- name: install oc
+  ansible.builtin.import_tasks: install_oc.yml
   when: install_jumpstarter
-  
-- name: build Jumpstarter
-  ansible.builtin.import_tasks: build_jumpstarter.yml
-  when: install_jumpstarter
+
+- name: pull the jumpstarter container
+  become: true
+  shell: podman pull {{ container_image }}

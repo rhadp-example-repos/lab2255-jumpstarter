@@ -1,4 +1,4 @@
-- name: install python3-pip
+- name: install python stuff
   become: true
   apt:
     name: "{{ packages }}"
@@ -6,6 +6,7 @@
   vars:
     packages:
       - python3-pip
+      - sense-hat
 
 - name: copy install script
   ansible.builtin.template:

@@ -3,49 +3,18 @@
 
 # create the example exporter if it does not exist first !
 
-- name: copy exporter config script
-  ansible.builtin.copy:
-    src: "../files/exporter_config.sh"
-    dest: "{{ work_dir }}/exporter_config.sh"
-    mode: "0755"
+- name: create the mock exporter
+  become: true
+  shell: |
+    podman run --rm -ti --net=host --privileged \
+      -v /run/udev:/run/udev -v /dev:/dev -v /etc/jumpstarter:/etc/jumpstarter -v /root/.kube/config:/root/.kube/config \
+      quay.io/rhadp-example-repos/jumpstarter:latest \
+      jmp admin create exporter outpost-mock -l shadowcar/board mock --save
 
-- name: create jumpstarter mock config
-  shell: ./exporter_config.sh
-  args:
-    chdir: "{{ work_dir }}"
-
-- name: read the exporter config
-  slurp:
-    src: "{{ work_dir }}/outpost-mock-exporter.yaml"
-  register: exporter_file
-
-- name: parse the exporter config
-  set_fact:
-    exporter_config: "{{ exporter_file.content | b64decode | from_yaml }}"
-
-- name: patch exporter config
-  set_fact: 
-    exporter_config: "{{ exporter_config | combine({'export': {'storage': {'type':'jumpstarter_driver_opendal.driver.MockStorageMux'},'power':{'type':'jumpstarter_driver_power.driver.MockPower'}}, 'tls': {'ca':'','insecure': 'true'}}) }}"
-
-- name: write exporter config back
-  ansible.builtin.copy:
-    content: "{{ exporter_config | to_nice_yaml }}"
-    dest: "{{ work_dir }}/outpost-mock-exporter.yaml"
-
-- name: read the client config
-  slurp:
-    src: "$HOME/.config/jumpstarter/clients/outpost-mock.yaml"
-  register: client_file
-
-- name: parse the client config
-  set_fact:
-    client_config: "{{ client_file.content | b64decode | from_yaml }}"
-
-- name: patch client config
-  set_fact: 
-    client_config: "{{ client_config | combine({'tls': {'ca':'','insecure': 'true'}}) }}"
-
-- name: write client config back
-  ansible.builtin.copy:
-    content: "{{ client_config | to_nice_yaml }}"
-    dest: "$HOME/.config/jumpstarter/clients/outpost-mock.yaml"
+- name: create the mock client
+  become: true
+  shell: |
+    podman run --rm -ti --net=host --privileged \
+      -v /run/udev:/run/udev -v /dev:/dev -v /etc/jumpstarter:/etc/jumpstarter -v /root/.kube/config:/root/.kube/config \
+      quay.io/rhadp-example-repos/jumpstarter:latest \
+      jmp admin create client outpost-mock --save --unsafe
