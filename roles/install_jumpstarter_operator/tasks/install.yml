@@ -12,6 +12,7 @@
 - name: create the application
   k8s:
     state: present
+    apply: yes
     definition: "{{ lookup('template', item ) | from_yaml_all }}"
   loop:
     - clusterrolebinding-oidc-reviewer.yml
