@@ -11,13 +11,14 @@ spec:
   source:
     chart: jumpstarter
     helm:
-      parameters:
-        - name: global.baseDomain
-          value: "{{ cluster_apps_domain }}"
-        - name: global.metrics.enabled
-          value: "true"
-        - name: jumpstarter-controller.grpc.mode
-          value: "route"
+      valuesObject:
+        global:
+          baseDomain: "{{ cluster_apps_domain }}"
+          metrics:
+            enabled: true
+        jumpstarter-controller:
+          grpc:
+            mode: "route"
     repoURL: "{{ jumpstarter_helm_repo }}"
     targetRevision: "{{ jumpstarter_helm_repo_version }}"
   syncPolicy:
