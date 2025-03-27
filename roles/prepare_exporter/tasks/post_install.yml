@@ -11,7 +11,7 @@
       -v /root/.kube/config:/opt/app-root/src/.kube/config \
       -v "$PWD/{{ exporter_dir }}:/opt/app-root/src/workspace" \
       quay.io/rhadp-example-repos/jumpstarter:latest \
-      /bin/bash -c "jmp admin create exporter outpost-{{ item }} -l lab2255/board {{ item }} --save --out ./workspace/outpost-{{ item }}-exporter.yaml"
+      /bin/bash -c "jmp admin create exporter outpost-{{ item }} -n {{ default_exporter_namesspace }} -l lab2255/board {{ item }} --save --out ./workspace/outpost-{{ item }}-exporter.yaml"
   args:
     chdir: "{{ work_dir }}"
   with_items:
