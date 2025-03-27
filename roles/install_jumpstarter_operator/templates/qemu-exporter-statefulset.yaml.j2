@@ -93,6 +93,8 @@ spec:
         - name: jumpstarter-exporter
           image: quay.io/ncao/jumpstarter:summit # TODO: use an arm based image
           imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
           volumeMounts:
             - mountPath: /shared
               name: shared
