@@ -16,3 +16,4 @@
   loop:
     - clusterrolebinding-oidc-reviewer.yml
     - jumpstarter-application.yml.j2
+    - qemu-exporter-statefulset.yaml.j2

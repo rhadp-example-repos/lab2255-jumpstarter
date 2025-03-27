@@ -4,6 +4,9 @@
 - name: uninstall the Jumpstarter operator
   shell: oc delete apps jumpstarter -n openshift-gitop
 
+- name: delete the Jumpstarter qemu exporter namespace
+  shell: oc delete namespace "{{ jumpstarter_qemu_exporter_namespace }}"
+
 - name: delete the Jumpstarter namespace
   shell: oc delete namespace "{{ jumpstarter_namespace }}"
 
