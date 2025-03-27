@@ -54,10 +54,6 @@ spec:
       volumes:
         - name: shared
           emptyDir: {}
-        - name: dev-kvm
-          hostPath:
-            path: /dev/kvm
-            type: CharDevice
         - name: dev-vhost-vsock
           hostPath:
             path: /dev/vhost-vsock
@@ -100,8 +96,6 @@ spec:
           volumeMounts:
             - mountPath: /shared
               name: shared
-            - mountPath: /dev/kvm
-              name: dev-kvm
             - mountPath: /dev/vhost-vsock
               name: dev-vhost-vsock
           env:
