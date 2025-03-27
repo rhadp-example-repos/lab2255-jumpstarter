@@ -6,3 +6,6 @@
 
 - name: delete the Jumpstarter namespace
   shell: oc delete namespace "{{ jumpstarter_namespace }}"
+
+- name: delete the oidc-reviewer cluster role binding
+  shell: oc delete clusterrolebindings.rbac.authorization.k8s.io oidc-reviewer
