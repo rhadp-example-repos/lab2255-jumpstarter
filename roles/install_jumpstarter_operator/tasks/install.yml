@@ -12,7 +12,7 @@
 - name: create the application
   k8s:
     state: present
-    definition: "{{ lookup('template', item ) | from_yaml }}"
+    definition: "{{ lookup('template', item ) | from_yaml_all }}"
   loop:
     - clusterrolebinding-oidc-reviewer.yml
     - jumpstarter-application.yml.j2
