@@ -4,5 +4,5 @@
 jumpstarter_namespace: jumpstarter-lab
 
 jumpstarter_helm_repo: quay.io/jumpstarter-dev/helm
-jumpstarter_helm_repo_version: "0.5.0-112-g02b6b92"
+jumpstarter_helm_repo_version: "0.5.0-117-g1b98390"
 
