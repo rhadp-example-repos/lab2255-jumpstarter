@@ -11,7 +11,7 @@
       include_role:
         name: roles/gather_facts
         
-    - name: Update/patch/uninstall the Developer Hub patch
+    - name: update/patch/uninstall the Developer Hub patch
       include_role:
         name: roles/patch_developer_hub
 

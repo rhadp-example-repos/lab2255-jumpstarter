@@ -1,8 +1,9 @@
 # Implement your install deployment tasks here
 # -------------------------------------------------
 
-- name: install pipeline assets
-  include_tasks:
-    file: ./install_pipeline_assets.yml
-    apply:
-      become: "{{ become_override | bool }}"
+- name: create the rhadp application
+  k8s:
+    state: present
+    definition: "{{ lookup('template', item ) | from_yaml }}"
+  loop:
+    - rhadp-bootstrap.yml.j2

@@ -1,3 +1,15 @@
 # Implement your pre-install deployment tasks here
 # -------------------------------------------------
 
+- name: create additional namespaces
+  kubernetes.core.k8s:
+    state: present
+    kind: Namespace
+    name: "{{ item }}"
+    definition:
+      metadata:
+        labels:
+          argocd.argoproj.io/managed-by: openshift-gitops
+  with_items:
+    - "{{ outpost_namespace }}"
+    - "{{ rhadp_namespace }}"

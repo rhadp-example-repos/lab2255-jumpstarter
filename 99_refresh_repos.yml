@@ -6,13 +6,17 @@
     become_override: false
   
   tasks:
-    - name: Uninstall the code templates
+    - name: gather facts
+      include_role:
+        name: roles/gather_facts
+
+    - name: uninstall the code templates
       vars:
         ACTION: "UNINSTALL" # INSTALL, UNINSTALL, UPDATE
       include_role:
         name: roles/import_repos
 
-    - name: Re-import the code templates
+    - name: import the code templates
       vars:
         ACTION: "INSTALL" # INSTALL, UNINSTALL, UPDATE
       include_role:

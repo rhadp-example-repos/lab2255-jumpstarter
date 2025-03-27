@@ -6,7 +6,7 @@ work_dir: "/home/workspace"
 exporter_dir: "exporter"
 
 # default exporter namespace that all users can access
-default_exporter_namesspace: "default" #"jumpstarter-lab"
+default_exporter_namesspace: "outpost"
 
 # jumpstarter container
 container_image: "quay.io/rhadp-example-repos/jumpstarter:latest"

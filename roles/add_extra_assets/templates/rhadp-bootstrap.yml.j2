@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rhadp-bootstrap
+  namespace: openshift-gitops
+spec:
+  project: default
+  revisionHistoryLimit: 3
+  source:
+    directory:
+      recurse: false
+    path: manifests/apps/rhadp-bootstrap
+    repoURL: "{{ templates_repo_url }}"
+    targetRevision: "{{ templates_repo_branch }}"
+  syncPolicy:
+    automated: {}
+    retry:
+      backoff:
+        duration: 10s5s
+        factor: 2
+        maxDuration: 10m0s
+      limit: 2
+    syncOptions:
+      - RespectIgnoreDifferences=true
+  destination:
+    name: in-cluster
+    namespace: "{{ rhadp_namespace }}"
+
+  

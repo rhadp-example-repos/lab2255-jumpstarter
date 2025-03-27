@@ -11,7 +11,7 @@
       include_role:
         name: roles/gather_facts
         
-    - name: Update/patch/uninstall the Jumpstarter operator
+    - name: update/patch/uninstall the Jumpstarter operator
       include_role:
         name: roles/install_jumpstarter_operator
 
