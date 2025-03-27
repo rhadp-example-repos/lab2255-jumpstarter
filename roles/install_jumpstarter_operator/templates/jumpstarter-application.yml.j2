@@ -30,8 +30,7 @@ spec:
                     certificateAuthority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
                   claimMappings:
                     username:
-                      claim: "sub"
-                      prefix: "kubernetes:"
+                      expression: '"kubernetes:" + claims["kubernetes.io"]["namespace"]'
     repoURL: "{{ jumpstarter_helm_repo }}"
     targetRevision: "{{ jumpstarter_helm_repo_version }}"
   syncPolicy:

@@ -79,7 +79,7 @@ spec:
                 labels:
                   example.com/board: qemu
               spec:
-                username: kubernetes:$(kubectl auth whoami -o jsonpath="{.status.userInfo.username}")
+                username: kubernetes:$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
               EOF
 
               while [ -z "$ENDPOINT" ]
