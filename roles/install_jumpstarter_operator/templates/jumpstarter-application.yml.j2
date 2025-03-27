@@ -23,9 +23,9 @@ spec:
             authentication:
               jwt:
                 - issuer:
-                    url: https://kubernetes.default.svc.cluster.local
+                    url: https://kubernetes.default.svc
                     audiences:
-                      - https://kubernetes.default.svc.cluster.local
+                      - https://kubernetes.default.svc
                     audienceMatchPolicy: MatchAny
                     certificateAuthority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
                   claimMappings:
