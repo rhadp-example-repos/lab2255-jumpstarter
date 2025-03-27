@@ -21,12 +21,19 @@
       become: "{{ become_override | bool }}"
   when: ACTION == "INSTALL" #or ACTION == "UPDATE"
 
+- name: running update tasks
+  include_tasks:
+    file: ./update.yml
+    apply:
+      become: "{{ become_override | bool }}"
+  when: ACTION == "UPDATE"
+
 - name: running post install tasks
   include_tasks:
     file: ./post_install.yml
     apply:
       become: "{{ become_override | bool }}"
-  when: ACTION == "INSTALL" or ACTION == "UPDATE"
+  when: ACTION == "INSTALL"
 
 - name: running uninstall tasks
   include_tasks:

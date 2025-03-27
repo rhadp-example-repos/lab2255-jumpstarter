@@ -51,10 +51,26 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    #owner: "{{ ansible_user }}"
+    #group: "{{ ansible_user }}"
     mode: 0755
   with_items:
     - "{{ work_dir }}"
     - "/etc/jumpstarter"
     - "/root/.config/jumpstarter/clients"
+
+- name: re-create the workspace dirs
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    #owner: "{{ ansible_user }}"
+    #group: "{{ ansible_user }}"
+    mode: 0777
+  with_items:
+    - "{{ work_dir }}/{{ exporter_dir }}"
+
+# patch the .kube/config because of the wrong permissions
+- name: patch the .kube/config
+  become: true
+  shell: chmod 0744 /root/.kube/config

@@ -3,6 +3,7 @@
 
 # where to store stuff needed for the builds
 work_dir: "/home/workspace"
+exporter_dir: "exporter"
 
 # jumpstarter container
 container_image: "quay.io/rhadp-example-repos/jumpstarter:latest"

@@ -9,6 +9,6 @@
   ansible.builtin.import_tasks: build_ykush.yml
   when: install_ykush
 
-- name: pull the jumpstarter container
+- name: pull the latest jumpstarter container
   become: true
   shell: podman pull {{ container_image }}

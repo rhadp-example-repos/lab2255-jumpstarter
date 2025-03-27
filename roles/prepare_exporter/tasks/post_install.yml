@@ -1,25 +1,27 @@
 # Implement your post-install deployment tasks here
 # -------------------------------------------------
 
-# create the example exporter if it does not exist first !
+# create the default exporters
 
 - name: create the default exporters
   become: true
   shell: |
     podman run --rm -ti --net=host --privileged \
-      -v /run/udev:/run/udev -v /dev:/dev -v /root/.kube/config:/root/.kube/config -v "$PWD":"$PWD" \
+      -v /run/udev:/run/udev -v /dev:/dev \
+      -v /root/.kube/config:/opt/app-root/src/.kube/config \
+      -v "$PWD/{{ exporter_dir }}:/opt/app-root/src/workspace" \
       quay.io/rhadp-example-repos/jumpstarter:latest \
-      /bin/bash -c "cd $PWD/; jmp admin create exporter outpost-{{ item }} -l lab2255/board {{ item }} --save --out ./outpost-{{ item }}-exporter.yaml"
+      /bin/bash -c "jmp admin create exporter outpost-{{ item }} -l lab2255/board {{ item }} --save --out ./workspace/outpost-{{ item }}-exporter.yaml"
   args:
     chdir: "{{ work_dir }}"
   with_items:
     - "default"
-    - "rpi4"
-    - "ti"
+    #- "rpi4"
+    #- "ti"
 
 - name: read the exporter config
   slurp:
-    src: "{{ work_dir }}/outpost-default-exporter.yaml"
+    src: "{{ work_dir }}/{{ exporter_dir }}/outpost-default-exporter.yaml"
   register: exporter_file
 
 - name: parse the exporter config
@@ -40,12 +42,58 @@
   become: true
   ansible.builtin.template:
     src: "../templates/{{ item }}-exporter.yaml.j2"
-    dest: "{{ work_dir }}/outpost-{{ item }}-exporter.yaml"
+    dest: "{{ work_dir }}/{{ exporter_dir }}/outpost-{{ item }}-exporter.yaml"
     mode: "0755"
   with_items:
     - "default"
-    - "rpi4"
-    - "ti"
+    #- "rpi4"
+    #- "ti"
 
-- name: create systemd services
-  ansible.builtin.import_tasks: create_systemd.yml
+# create systemd services for the exporters
+
+- name: create start scripts
+  become: true
+  ansible.builtin.template:
+    src: "../templates/default-exporter-start.sh.j2"
+    dest: "/usr/local/bin/outpost-{{ item }}-exporter.start"
+    mode: "0755"
+  with_items:
+    - "default"
+    #- "rpi4"
+    #- "ti"
+
+- name: create stop scripts
+  become: true
+  ansible.builtin.template:
+    src: "../templates/default-exporter-stop.sh.j2"
+    dest: "/usr/local/bin/outpost-{{ item }}-exporter.stop"
+    mode: "0755"
+  with_items:
+    - "default"
+    #- "rpi4"
+    #- "ti"
+
+- name: create systemd scripts
+  become: true
+  ansible.builtin.template:
+    src: "../templates/default-exporter.service.j2"
+    dest: "/etc/systemd/system/outpost-{{ item }}-exporter.service"
+    mode: "0755"
+  with_items:
+    - "default"
+    #- "rpi4"
+    #- "ti"
+
+- name: refresh the systemd daemon
+  become: true
+  shell: systemctl daemon-reload
+
+- name: enable the systemd services
+  become: true
+  shell: |
+    systemctl enable outpost-{{ item }}-exporter.service
+    systemctl start outpost-{{ item }}-exporter.service
+  with_items:
+    - "default"
+    #- "rpi4"
+    #- "ti"
