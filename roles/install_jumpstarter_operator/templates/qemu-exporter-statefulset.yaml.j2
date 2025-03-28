@@ -68,6 +68,10 @@ spec:
       volumes:
         - name: shared
           emptyDir: {}
+        - name: dev-kvm
+          hostPath:
+            path: /dev/kvm
+            type: CharDevice
         - name: dev-vhost-vsock
           hostPath:
             path: /dev/vhost-vsock
@@ -105,13 +109,15 @@ spec:
               echo "$ENDPOINT" > /shared/endpoint
       containers:
         - name: jumpstarter-exporter
-          image: quay.io/ncao/jumpstarter:summit # TODO: use an arm based image
+          image: quay.io/ncao/jumpstarter:summit-aarch64 # TODO: use an arm based image
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
           volumeMounts:
             - mountPath: /shared
               name: shared
+            - mountPath: /dev/kvm
+              name: dev-kvm
             - mountPath: /dev/vhost-vsock
               name: dev-vhost-vsock
           env:
