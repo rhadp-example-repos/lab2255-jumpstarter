@@ -1,0 +1,10 @@
+{% for i in range(1, 6) %}
+---
+apiVersion: jumpstarter.dev/v1alpha1
+kind: Client
+metadata:
+  namespace: "{{ jumpstarter_qemu_exporter_namespace }}"
+  name: "user{{ i }}"
+spec:
+  username: "kubernetes:user{{ i }}-devspaces"
+{% endfor %}
