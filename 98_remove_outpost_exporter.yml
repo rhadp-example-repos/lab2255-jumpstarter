@@ -1,0 +1,16 @@
+- name: Remove the default exporters
+  hosts: exporter
+  vars:
+    # set the following to control the install/uninstall process
+    silent: false
+    become_override: false
+    ACTION: "UNINSTALL" # INSTALL, UNINSTALL, UPDATE
+
+  tasks:
+    - name: gather facts
+      include_role:
+        name: roles/gather_facts
+
+    - name: update/patch/uninstall the exporter configuration
+      include_role:
+        name: roles/prepare_outpost
