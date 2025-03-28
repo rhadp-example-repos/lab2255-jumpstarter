@@ -18,7 +18,7 @@ metadata:
   labels:
     machine.openshift.io/cluster-api-cluster: "cluster-{{ cluster_instance }}"
 spec:
-  replicas: { { arm_metal_instance_count } }
+  replicas: {{ arm_metal_instance_count }}
   selector:
     matchLabels:
       machine.openshift.io/cluster-api-cluster: "cluster-{{ cluster_instance }}"
@@ -34,6 +34,10 @@ spec:
         machine.openshift.io/cluster-api-machineset: "cluster-{{ cluster_instance }}-worker-arm-metal-{{ availability_zone }}"
     spec:
       lifecycleHooks: {}
+      taints:
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        value: arm64
       metadata:
         labels:
           node-role.kubernetes.io/worker-arm: ""
@@ -53,7 +57,7 @@ spec:
             - ebs:
                 iops: 0
                 kmsKey: {}
-                volumeSize: { { arm_metal_volume_size } }
+                volumeSize: {{ arm_metal_volume_size }}
                 volumeType: "{{ arm_metal_volume_type }}"
           securityGroups:
             - filters:

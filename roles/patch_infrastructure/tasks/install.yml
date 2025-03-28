@@ -4,6 +4,7 @@
 - name: create machine set
   k8s:
     state: present
+    apply: true
     definition: "{{ lookup('template', item ) | from_yaml }}"
   loop:
     - arm-metal-machine-set.yml.j2
