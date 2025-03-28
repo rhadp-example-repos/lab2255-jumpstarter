@@ -10,6 +10,11 @@ exporter:
     outpost.local:
       ssh_public_key_file: ~/.ssh/id_rsa.pub # use this key to access the image
 
+      # what drivers/extensions to install
+      install_sdwire: true
+      install_ykush: true
+      install_jumpstarter: true
+
       # DuT infrastructure
       dut_usb_port: 1
       dut_serial_device: bdgrd_sdwirec_437
@@ -26,18 +31,24 @@ all:
 
     # other infrastructure variables
     cluster_guid: "xyz123"   # get this from the RHPD Demo URL
+    cluster_instance: "xyz123-123xyz"
+
     region: "us-east-2"  # get this from the RHPD Demo configuration screen
+    availability_zone: "us-east-2c
 
     # template specific variables
     templates_repo_group: "rhdh"
     templates_repo_name: "lab2255-templates"
     templates_repo_url: "https://github.com/rhadp-example-repos/lab2255-templates"
-    templates_repo_branch: "main"
+    templates_repo_branch: "develop"
 
     # namespace specific variables
     gitlab_namespace: gitlab
     backstage_namespace: backstage
-    
+    vault_namespace: vault
+    outpost_namespace: outpost
+    rhadp_namespace: rhadp
+
     # aib-builder specific variables
     aib_builder_user: "lab-user"
     aib_builder_password: "xyz123"
