@@ -1,9 +1,9 @@
 # Implement your install deployment tasks here
 # -------------------------------------------------
 
-- name: install cluster tasks
+- name: create machine set
   k8s:
     state: present
     definition: "{{ lookup('template', item ) | from_yaml }}"
   loop:
-    - inspect.yaml.j2
+    - arm-metal-machine-set.yml.j2

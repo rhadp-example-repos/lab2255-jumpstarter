@@ -1,0 +1,10 @@
+# Implement your uninstall deployment tasks here
+# -------------------------------------------------
+
+- name: uninstall machine set
+  k8s:
+    state: absent
+    name: "cluster-{{ cluster_instance }}-worker-arm-metal-{{ availability_zone }}"
+    namespace: openshift-machine-api
+    kind: MachineSet
+    apiVersion: machine.openshift.io/v1beta1

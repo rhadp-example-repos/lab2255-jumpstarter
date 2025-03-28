@@ -1,0 +1,9 @@
+---
+# defaults
+
+# "arm" worker instance definition
+arm_metal_instance_type: "m7g.metal"
+arm_metal_ami_id: "ami-033926c77d78f501a"
+arm_metal_instance_count: 1
+arm_metal_volume_size: 250
+arm_metal_volume_type: "gp2"
